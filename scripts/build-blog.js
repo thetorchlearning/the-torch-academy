@@ -1,0 +1,47 @@
+const fs = require('fs');
+const path = require('path');
+const matter = require('gray-matter');
+const { marked } = require('marked');
+
+const ROOT = process.cwd();
+const POSTS_DIR = path.join(ROOT, 'blog', 'posts');
+const BLOG_DIR = path.join(ROOT, 'blog');
+const SITE = 'https://thetorchlearning.netlify.app';
+const BRAND = 'The Torch Academy';
+const BLOG_NAME = 'Torch Insights';
+const esc = (v='') => String(v).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const slugify = s => String(s).toLowerCase().normalize('NFKD').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'');
+const dateLabel = d => new Intl.DateTimeFormat('en', { year:'numeric', month:'long', day:'numeric', timeZone:'UTC' }).format(new Date(d));
+const readTime = s => Math.max(1, Math.ceil(String(s).trim().split(/\s+/).filter(Boolean).length / 220));
+const shell = (title, description, canonical, body, image, type='website') => `<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(title)}</title><meta name="description" content="${esc(description)}"><link rel="canonical" href="${esc(canonical)}">
+<meta property="og:type" content="${type}"><meta property="og:site_name" content="${BRAND}"><meta property="og:title" content="${esc(title)}"><meta property="og:description" content="${esc(description)}"><meta property="og:url" content="${esc(canonical)}"><meta property="og:image" content="${esc(image)}"><meta property="og:image:alt" content="${esc(title)}"><meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="${esc(title)}"><meta name="twitter:description" content="${esc(description)}"><meta name="twitter:image" content="${esc(image)}">
+<meta name="theme-color" content="#0b4b2b"><link rel="stylesheet" href="/assets/styles.css"><link rel="stylesheet" href="/assets/blog.css"><link rel="icon" href="/assets/favicon.ico"><link rel="icon" type="image/svg+xml" href="/assets/favicon.svg"></head><body><div class="topline"></div>
+<header class="site-header"><div class="container nav"><a class="brand" href="/index.html"><img src="/assets/torch-academy-logo.png" alt="The Torch Academy"></a><button class="menu-toggle" aria-label="Toggle navigation" aria-expanded="false">☰</button><nav class="navlinks" aria-label="Main navigation"><a href="/index.html">Home</a><a href="/about.html">About Us</a><a href="/programmes.html">Programmes</a><a href="/learners.html">Who We Serve</a><a href="/approach.html">Our Approach</a><a href="/blog/" class="active" aria-current="page">Torch Insights</a><a href="/contact.html">Contact Us</a></nav><a class="btn btn-primary nav-cta" href="/contact.html">Get Started <span>↗</span></a></div></header>
+${body}<footer class="site-footer"><div class="container"><div class="footer-main"><div class="footer-brand"><a href="/index.html"><img src="/assets/torch-academy-logo.png" alt="The Torch Academy"></a><p>Lighting Minds and Shaping Futures. Personalised online Mathematics and Science coaching for growing minds.</p></div><div class="footer-links"><div><h4>Explore</h4><a href="/about.html">About Us</a><a href="/programmes.html">Our Programmes</a><a href="/blog/">Torch Insights</a></div><div><h4>Get in touch</h4><a href="/approach.html">Our Approach</a><a href="/contact.html">Contact Us</a><a href="https://instagram.com/thetorchlearning" target="_blank" rel="noopener">Instagram</a></div></div></div><div class="copyright"><span>© <span id="year"></span> The Torch Academy. All rights reserved.</span><span>An educational initiative affiliated with Christ Land Schools.</span></div></div></footer><a class="whatsapp-float" href="https://wa.me/2349121591307?text=Hello%20The%20Torch%20Academy%2C%20I%27d%20like%20to%20make%20an%20enquiry." target="_blank" rel="noopener" aria-label="Chat with The Torch Academy on WhatsApp">☏ <span>Chat with us</span></a><script src="/assets/site.js"></script><script>document.getElementById('year').textContent=new Date().getFullYear();</script></body></html>`;
+
+fs.mkdirSync(POSTS_DIR, {recursive:true});
+const files = fs.readdirSync(POSTS_DIR).filter(f => f.endsWith('.md'));
+const posts = files.map(file => {
+  const raw = fs.readFileSync(path.join(POSTS_DIR,file),'utf8');
+  const parsed = matter(raw); const data = parsed.data || {};
+  const title = data.title || path.basename(file,'.md');
+  const slug = slugify(data.slug || path.basename(file,'.md'));
+  const date = data.date || new Date().toISOString().slice(0,10);
+  return {title, slug, date, description:data.description || '', category:data.category || 'Learning Resources', image:(data.featured_image || '/assets/torch-academy-social-preview.jpg').startsWith('http') ? (data.featured_image || '/assets/torch-academy-social-preview.jpg') : `${SITE}${data.featured_image || '/assets/torch-academy-social-preview.jpg'}`, markdown:parsed.content, html:marked.parse(parsed.content), words:parsed.content};
+}).sort((a,b)=>new Date(b.date)-new Date(a.date));
+
+const card = p => `<article class="blog-card"><a class="blog-card-image" href="/blog/${esc(p.slug)}/"><img src="${esc(p.image)}" alt="${esc(p.title)}" loading="lazy"></a><div class="blog-card-body"><span class="blog-category">${esc(p.category)}</span><h2><a href="/blog/${esc(p.slug)}/">${esc(p.title)}</a></h2><p>${esc(p.description)}</p><div class="blog-meta"><span>${esc(dateLabel(p.date))}</span><span>${readTime(p.words)} min read</span></div><a class="blog-read-more" href="/blog/${esc(p.slug)}/">Read article ↗</a></div></article>`;
+const listBody = `<main><section class="page-hero"><div class="container"><span class="eyebrow">Ideas that help learners grow</span><h1>Torch Insights</h1><p>Insights, ideas and practical learning resources for students and parents.</p></div></section><section><div class="container"><div class="blog-toolbar"><label class="blog-search-label" for="blog-search">Search articles</label><input id="blog-search" class="blog-search" type="search" placeholder="Search by title, topic or keyword"><div class="blog-filters" id="blog-filters"><button class="blog-filter active" data-category="all">All articles</button>${[...new Set(posts.map(p=>p.category))].sort().map(c=>`<button class="blog-filter" data-category="${esc(c)}">${esc(c)}</button>`).join('')}</div></div><div class="blog-grid" id="blog-grid">${posts.length?posts.map(card).join(''):'<div class="blog-empty"><h2>Our articles are coming soon.</h2><p>We are preparing helpful learning resources for you. Please check back shortly.</p></div>'}</div></div></section></main><script>const search=document.getElementById('blog-search'),grid=document.getElementById('blog-grid'),filters=[...document.querySelectorAll('.blog-filter')];let category='all';function filterPosts(){const q=search.value.toLowerCase();grid.querySelectorAll('.blog-card').forEach(card=>{const okCat=category==='all'||card.querySelector('.blog-category').textContent===category;card.hidden=!(okCat&&card.textContent.toLowerCase().includes(q));});}search.addEventListener('input',filterPosts);filters.forEach(b=>b.addEventListener('click',()=>{filters.forEach(x=>x.classList.remove('active'));b.classList.add('active');category=b.dataset.category;filterPosts();}));</script>`;
+fs.writeFileSync(path.join(BLOG_DIR,'index.html'), shell(`${BLOG_NAME} | ${BRAND}`, 'Insights, ideas and practical learning resources for students and parents from The Torch Academy.', `${SITE}/blog/`, listBody, `${SITE}/assets/torch-academy-social-preview.jpg`));
+
+for (const p of posts) {
+  const url = `${SITE}/blog/${p.slug}/`;
+  const related = posts.filter(x=>x.slug!==p.slug && (x.category===p.category)).slice(0,3);
+  const relatedHtml = related.length ? `<section class="related-section"><div class="container"><h2>Related articles</h2><div class="blog-grid">${related.map(card).join('')}</div></div></section>` : '';
+  const body = `<main><section class="article-top"><div class="container"><a class="article-back" href="/blog/">← Back to the blog</a><span class="blog-category">${esc(p.category)}</span><h1>${esc(p.title)}</h1><p class="article-description">${esc(p.description)}</p><div class="blog-meta"><span>${esc(dateLabel(p.date))}</span><span>${readTime(p.words)} min read</span></div></div></section><article class="article-layout"><div class="container"><img class="article-featured" src="${esc(p.image)}" alt="${esc(p.title)}"><div class="article-content">${p.html}</div><div class="article-share"><strong>Share this article</strong><a class="btn btn-primary" href="https://wa.me/?text=${encodeURIComponent(p.title+' '+url)}" target="_blank" rel="noopener">Share on WhatsApp ↗</a><button class="btn btn-light" onclick="navigator.clipboard.writeText(location.href).then(()=>this.textContent='Link copied')">Copy article link</button></div></div></article>${relatedHtml}</main>`;
+  const out=path.join(BLOG_DIR,p.slug,'index.html'); fs.mkdirSync(path.dirname(out),{recursive:true});
+  fs.writeFileSync(out,shell(`${p.title} | ${BRAND}`,p.description,url,body,p.image,'article'));
+}
+console.log(`Generated blog homepage and ${posts.length} article page(s).`);

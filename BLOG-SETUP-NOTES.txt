@@ -1,0 +1,32 @@
+THE TORCH ACADEMY — TORCH INSIGHTS
+===================================
+
+This package adds the Torch Insights blog and Decap CMS to the existing static website.
+
+IMPORTANT FILE PLACEMENT
+- All website files in this ZIP are at the archive root.
+- When uploading to GitHub, upload the CONTENTS of this extracted folder into the existing repository root (where index.html already lives). Do not upload the containing folder itself.
+- Keep the existing repository files; GitHub will show matching files as replacements and new files as additions.
+
+PUBLIC URLS
+- Blog: /blog/
+- Content manager: /admin/
+
+BLOG CONTENT
+- Add Markdown articles through Decap CMS.
+- Article files are stored in blog/posts/.
+- Uploaded images are stored in assets/uploads/.
+- Netlify runs `npm run build` to generate /blog/index.html and each article page.
+
+AUTHENTICATION — REQUIRED BEFORE CMS LOGIN
+- The CMS uses Decap's GitHub backend for the repository thetorchlearning/the-torch-academy on branch main.
+- Before /admin/ login will work, register a GitHub OAuth App with callback URL https://api.netlify.com/auth/done, then add its Client ID and Client Secret under the Netlify site's Project configuration > Security > OAuth > Authentication Providers > GitHub.
+- Do not put the Client Secret in this repository, in this ZIP, or in chat. Enter it only in Netlify's secure settings.
+- The user account signing in must have write access to the GitHub repository.
+
+DEPLOYMENT
+- Netlify build command: npm run build
+- Publish directory: .
+- The repository must include package.json, package-lock.json (if generated), netlify.toml, scripts/, blog/, admin/, assets/, and the existing HTML pages at its root.
+
+No existing page content or styling is intentionally redesigned by this integration. Test the live site and CMS before publishing the first article.

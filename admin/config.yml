@@ -1,0 +1,40 @@
+backend:
+  name: github
+  repo: thetorchlearning/the-torch-academy
+  branch: main
+  # Complete the GitHub OAuth provider setup in Netlify before signing in.
+
+media_folder: "assets/uploads"
+public_folder: "/assets/uploads"
+
+publish_mode: editorial_workflow
+site_url: https://thetorchlearning.netlify.app
+display_url: https://thetorchlearning.netlify.app
+
+collections:
+  - name: "blog"
+    label: "Torch Insights Articles"
+    label_singular: "Torch Insights Article"
+    folder: "blog/posts"
+    create: true
+    slug: "{{slug}}"
+    extension: "md"
+    format: "frontmatter"
+    preview_path: "blog/{{slug}}/"
+    fields:
+      - { label: "Title", name: "title", widget: "string" }
+      - { label: "Short description", name: "description", widget: "text" }
+      - { label: "Featured image", name: "featured_image", widget: "image", required: false }
+      - label: "Category"
+        name: "category"
+        widget: "select"
+        options:
+          - "Mathematics"
+          - "Sciences"
+          - "Parenting and Education"
+          - "Study Skills"
+          - "Examination Preparation"
+          - "Learning Resources"
+          - "Educational Technology"
+      - { label: "Publication date", name: "date", widget: "datetime", time_format: false, format: "YYYY-MM-DD" }
+      - { label: "Article", name: "body", widget: "markdown" }
