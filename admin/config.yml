@@ -37,4 +37,7 @@ collections:
           - "Learning Resources"
           - "Educational Technology"
       - { label: "Publication date", name: "date", widget: "datetime", time_format: false, format: "YYYY-MM-DD" }
-      - { label: "Article", name: "body", widget: "markdown" }
+      - label: "Article"
+        name: "body"
+        widget: "markdown"
+        hint: "Write your article here. To add an image, place the cursor where it should appear and use the image button in the editor toolbar, or choose Image with caption to add a caption and placement. You can repeat this for as many images as you need. Use the editor toolbar to insert Editorial paragraph boxes and sentence highlights. YouTube embed HTML can also be pasted into the article."

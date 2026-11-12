@@ -1,0 +1,28 @@
+/* Torch Insights editorial components inside the CMS preview pane. */
+.article-content, .torch-editorial-box { font-family: Georgia, 'Times New Roman', serif; line-height: 1.8; }
+.torch-editorial-box { display: block; margin: 1.8em 0; padding: 1.35em 1.5em; border-radius: 14px; }
+.torch-editorial-box h3 { margin: 0 0 .55em; font: 800 .78rem/1.4 Arial, sans-serif; letter-spacing: .09em; text-transform: uppercase; }
+.torch-editorial-box p { margin: .45em 0; }
+.torch-editorial-box--soft-green { background: #f0f4e9; color: #294b32; }
+.torch-editorial-box--soft-green h3 { color: #287044; }
+.torch-editorial-box--warm-cream { background: #fff3e2; color: #57422d; border-left: 5px solid #d98b36; }
+.torch-editorial-box--warm-cream h3 { color: #a45e20; }
+.torch-editorial-box--deep-green { background: #28543a; color: #fff; }
+.torch-editorial-box--deep-green h3 { color: #f4c879; }
+.torch-editorial-box--bordered { background: #fff; color: #34483a; border: 1px solid #d9a04d; box-shadow: 0 8px 24px rgba(25,55,35,.06); }
+.torch-editorial-box--bordered h3 { color: #315b38; }
+.torch-editorial-box--minimal { background: #f8f5ef; color: #514e48; border-top: 2px solid #315b38; border-radius: 3px; }
+.torch-editorial-box--minimal h3 { color: #315b38; }
+.torch-highlight { padding: 0 .12em; -webkit-box-decoration-break: clone; box-decoration-break: clone; }
+.torch-highlight--soft { background: linear-gradient(transparent 48%, #dcebd4 48%); color: #244d31; }
+.torch-highlight--gold { background: linear-gradient(transparent 42%, #f8df9b 42%); color: #4d3b20; }
+.torch-highlight--underline { text-decoration: underline; text-decoration-color: #d98b36; text-decoration-thickness: 3px; text-underline-offset: 4px; }
+.torch-highlight--rose { background: #f8e8df; color: #75442f; border-radius: 3px; padding: .05em .22em; }
+.torch-highlight--bold { color: #17613a; font-weight: 800; border-bottom: 2px solid #d98b36; }
+.torch-article-image { margin: 1.8em 0; text-align: center; }
+.torch-article-image img { display: block; max-width: 100%; height: auto; margin: 0 auto; border-radius: 12px; }
+.torch-article-image--wide img { width: 100%; }
+.torch-article-image--center img { width: auto; max-width: 82%; }
+.torch-article-image--left { max-width: 52%; float: left; margin: 0 1.5em 1em 0; text-align: left; }
+.torch-article-image--right { max-width: 52%; float: right; margin: 0 0 1em 1.5em; text-align: left; }
+.torch-article-image figcaption { margin: .6em auto 0; color: #777; font-size: .88em; font-style: italic; }

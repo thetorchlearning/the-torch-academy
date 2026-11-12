@@ -1,0 +1,38 @@
+TORCH INSIGHTS EDITOR UPGRADE
+============================
+
+What's included
+---------------
+1. Multiple images can be inserted anywhere in the Markdown article using the editor's standard image toolbar.
+2. A custom "Image with caption" component allows an image upload, accessible alt description, caption, and placement: wide, centre, left, or right.
+3. An "Editorial paragraph box" component provides five styles: soft green, warm cream, deep green, elegant border, and minimal editorial. Each box can have an optional heading and one or more paragraphs.
+4. Five inline sentence-highlight components: soft green, golden marker, editorial underline, warm accent, and bold green.
+5. Responsive YouTube iframe styling.
+6. The original six website pages, brand assets, blog generator, Netlify configuration, CMS repository settings, and OAuth setup are retained.
+
+Files added
+-----------
+admin/editor-components.js
+assets/editorial-preview.css
+EDITOR-UPGRADE-NOTES.txt
+
+Files updated
+-------------
+admin/index.html
+admin/config.yml
+assets/blog.css
+README.txt
+
+Deployment
+----------
+This is a complete website package. The files are arranged at the repository root, as in the previous package. Upload/replace the extracted files in the existing GitHub repository, preserving the repository's current root structure. Do not create an extra enclosing folder.
+
+The build command and publish directory remain unchanged:
+Build command: npm run build
+Publish directory: .
+
+After the GitHub commit, Netlify should deploy automatically. Check the deployment status before opening /admin/ again. The editor upgrade should be tested with a draft article before publishing a real article.
+
+Important
+---------
+The CMS editor enhancements are added without changing the GitHub OAuth credentials, repository, branch, Netlify site, or existing article collection. Do not change or regenerate the GitHub OAuth Client Secret.
