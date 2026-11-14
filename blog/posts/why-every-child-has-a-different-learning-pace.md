@@ -266,11 +266,11 @@ And for educational institutions, it means creating environments where individua
 
 **The goal of education should not be to make every child learn at the same pace. It should be to give every child the opportunity, guidance and support to learn, understand and reach their potential.**
 
-At The Torch Academy, we believe that meaningful learning goes beyond the completion of lessons or the achievement of examination scores. It involves developing understanding, building confidence and equipping learners with the knowledge and skills to apply what they have learnt.
-
-Because every child deserves the opportunity to learn meaningfully.
-
-
+<aside class="torch-editorial-box torch-editorial-box--warm-cream">
+<div class="torch-editorial-box__body">
+<p>At The Torch Academy, we believe that meaningful learning goes beyond the completion of lessons or the achievement of examination scores. It involves developing understanding, building confidence and equipping learners with the knowledge and skills to apply what they have learnt.<br>Because every child deserves the opportunity to learn meaningfully.</p>
+</div>
+</aside>
 
 
 
