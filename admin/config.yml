@@ -8,8 +8,8 @@ media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
 publish_mode: editorial_workflow
-site_url: https://thetorchlearning.netlify.app
-display_url: https://thetorchlearning.netlify.app
+site_url: https://thetorchacademy.ng
+display_url: https://thetorchacademy.ng
 
 collections:
   - name: "blog"

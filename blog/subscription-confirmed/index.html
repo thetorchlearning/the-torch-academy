@@ -1,0 +1,20 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Subscription confirmed | Torch Insights</title><meta name="description" content="Your Torch Insights subscription has been confirmed."><link rel="stylesheet" href="/assets/styles.css"><link rel="stylesheet" href="/assets/blog.css"><link rel="icon" href="/assets/favicon.ico"></head><body><div class="topline"></div><header class="site-header"><div class="container nav"><a class="brand" href="/index.html"><img src="/assets/torch-academy-logo.png" alt="The Torch Academy"></a><nav class="navlinks" aria-label="Main navigation"><a href="/index.html">Home</a><a href="/blog/">Torch Insights</a><a href="/contact.html">Contact Us</a></nav></div></header><main><section class="article-top"><div class="container"><span class="eyebrow">Torch Insights</span><h1 id="confirmation-title">Confirm your subscription</h1><p class="article-description" id="confirmation-message" role="status" aria-live="polite">Please confirm below to complete your Torch Insights subscription.</p><button class="btn btn-primary" id="confirm-subscription" type="button">Confirm my subscription</button><a class="btn btn-primary" id="confirmation-link" href="/blog/" hidden>Explore the latest articles ↗</a></div></section></main><footer class="site-footer"><div class="container"><div class="copyright"><span>© <span id="year"></span> The Torch Academy. All rights reserved.</span></div></div></footer><script>
+document.getElementById('year').textContent=new Date().getFullYear();
+const confirmButton=document.getElementById('confirm-subscription');
+const title=document.getElementById('confirmation-title');
+const message=document.getElementById('confirmation-message');
+const link=document.getElementById('confirmation-link');
+const token=new URLSearchParams(window.location.search).get('token');
+if(!token){title.textContent='Confirmation link missing';message.textContent='This page needs the confirmation link from your email. Please use that link or subscribe again.';confirmButton.hidden=true;link.hidden=false;}
+confirmButton.addEventListener('click',async()=>{
+  confirmButton.disabled=true;confirmButton.textContent='Confirming…';message.textContent='Please wait while we securely verify your request.';
+  try{
+    const response=await fetch('/.netlify/functions/confirm-subscription',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({token})});
+    const result=await response.json().catch(()=>({}));
+    if(!response.ok)throw new Error(result.message||'We could not verify this link. Please try again.');
+    title.textContent='You’re subscribed!';message.textContent=result.message||'Your email address has been confirmed. Welcome to the Torch Insights community.';confirmButton.hidden=true;link.hidden=false;
+    window.history.replaceState({},document.title,window.location.pathname);
+  }catch(error){title.textContent='We couldn’t complete your confirmation';message.textContent=error.message;confirmButton.disabled=false;confirmButton.textContent='Try confirmation again';}
+});
+</script></body></html>
