@@ -26,7 +26,7 @@ exports.handler = async (event) => {
     connectLambda(event);
     const pending = getStore('torch-insights-pending');
     const tokenHash = crypto.createHash('sha256').update(token).digest('hex');
-    const record = await pending.get(tokenHash, { type: 'json', consistency: 'strong' });
+    const record = await pending.get(tokenHash, { type: 'json' });
     if (!record) return json(400, { message: 'This confirmation link has already been used or is invalid. Please subscribe again if you still wish to join.' });
     if (!record.email || !Number.isFinite(record.expiresAt) || Date.now() > record.expiresAt) {
       await pending.delete(tokenHash);
